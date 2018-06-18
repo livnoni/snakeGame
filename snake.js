@@ -3,6 +3,8 @@ const ctx = cvs.getContext("2d");
 
 //set the speed:
 var speed = 100;
+var timer = 0;
+let gameTimer = setInterval(()=>{timer++},1000);
 
 //create the unit:
 const box = 32;
@@ -83,7 +85,6 @@ function collision(head,array){
 }
 
 
-
 //draw everything to the canvas:
 
 function draw(){
@@ -139,14 +140,18 @@ function draw(){
 
     if(snakeX < box || snakeX > 17 *box || snakey < 3*box || snakey > 17*box || collision(newHead,snake)){
         clearTimeout(game);
+        clearTimeout(gameTimer);
         dead.play();
     }
 
     snake.unshift(newHead);
 
     ctx.fillStyle = "white";
-    ctx.font = "45px Change one";
+    ctx.font = "48px Change one";
     ctx.fillText(score, 2*box, 1.6*box);
+    ctx.fillText("Livnoni Snake", 4*box, 1.6*box);
+    ctx.font = "20px Change one";
+    ctx.fillText(`duration: ${timer} sec`, 14*box, 1.6*box);
 
 
 
