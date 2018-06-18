@@ -153,8 +153,6 @@ function draw(){
     ctx.font = "20px Change one";
     ctx.fillText(`duration: ${timer} sec`, 14*box, 1.6*box);
 
-
-
 };
 
 let game = setInterval(draw, speed);
