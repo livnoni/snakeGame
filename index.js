@@ -21,19 +21,19 @@ class BackgroundListener{
         function direction(event){
             if(event.keyCode == 37 && snakeDirection != "RIGHT"){
                 snakeDirection = "LEFT";
-                self.toString()
+                self.toString();
                 sound.play("left");
             }else if(event.keyCode == 38 && snakeDirection != "DOWN"){
                 snakeDirection = "UP";
-                self.toString()
+                self.toString();
                 sound.play("up");
             }else if(event.keyCode == 39 && snakeDirection != "LEFT"){
                 snakeDirection = "RIGHT";
-                self.toString()
+                self.toString();
                 sound.play("right");
             }else if(event.keyCode == 40 && snakeDirection != "UP"){
                 snakeDirection = "DOWN";
-                self.toString()
+                self.toString();
                 sound.play("down");
             }
         }
@@ -57,6 +57,12 @@ class Point {
     getY(){
         return this.y;
     }
+    setX(x){
+        this.x = x * box;
+    }
+    setY(y){
+        this.y = y * box;
+    }
     destructor (){
         console.log(`delete Point[${this.x/box},${this.y/box}]`);
         delete this.x;
@@ -72,6 +78,9 @@ class Game {
         this.snake = snake;
         new BackgroundListener(this.sound);
 
+        this.apple = new Apple({score:1});
+
+
     }
     draw(){
         const cvs = document.getElementById("snake");
@@ -80,15 +89,24 @@ class Game {
 
         for(var i =0; i< this.snake.getLength(); i++){
             ctx.fillStyle = (i==0) ? "green" : "white";
+            console.log(this.snake.getHeadX())
+            console.log(this.snake.getHeadY())
             ctx.fillRect(this.snake.getHeadX(), this.snake.getHeadY(), box, box);
 
             ctx.strokeStyle = "red";
             ctx.strokeRect(this.snake.getHeadX(), this.snake.getHeadY(), box, box);
+
+            ctx.drawImage(Apple.getPic(),this.apple.getPoint().getX() ,this.apple.getPoint().getY());
+
+            this.snake.move();
+
         }
 
     }
 
     async startGame(){
+
+
         while(true){
             await timeout(100);
             this.draw()
@@ -135,6 +153,13 @@ class Snake {
     getHeadY(){
         return this._body[0].getY();
     }
+    setHeadX(x){
+        this._body[0].setX(x);
+        // this._body[0].x = x;
+    }
+    setHeadY(y){
+        this._body[0].setY(y);
+    }
     getLength(){
         return this._body.length;
     }
@@ -143,8 +168,11 @@ class Snake {
 
     }
 
-    move(direction) {
-
+    move() {
+        if(snakeDirection == "LEFT")this.setHeadX((this._body[0].x - box)/box);
+        if(snakeDirection == "UP") this.setHeadY((this.getHeadY() - box)/box);
+        if(snakeDirection == "RIGHT") this.setHeadX((this.getHeadX() + box)/box);
+        if(snakeDirection == "DOWN") this.setHeadY((this.getHeadY() + box)/box);
     }
 }
 
@@ -155,40 +183,32 @@ function loadPic(path) {
 };
 
 
-class Food {
-    constructor(position, score) {
-        this.position = position;
-        this.score = score;
-    }
 
-    disappear() {
-    };
+class Food {
+    constructor(param) {
+        this.position = new Point(Math.floor(Math.random()*17+1),Math.floor(Math.random()*15+3));
+        this.score = param.score;
+    }
+    getPoint(){
+        return this.position;
+    }
 }
 
 class Apple extends Food {
-    constructor() {
-        super(position, score);
+    constructor(param) {
+        super(param);
     }
-
-    // static pic = loadPic("img/food.png");
     static getPic() {
         return loadPic("img/food.png");
     }
 }
 
-class Banana extends Food {
-    constructor() {
-        super(position, score);
-    }
 
-    static getPic() {
-        return loadPic("img/food.png");
-    }
-}
+
 
 class Bonus extends Food {
     constructor() {
-        super(position, score);
+        super(score);
     }
 
     static getPic() {
