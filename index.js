@@ -98,7 +98,7 @@ class Game {
 
             ctx.drawImage(Apple.getPic(),this.apple.getPoint().getX() ,this.apple.getPoint().getY());
 
-            this.snake.move();
+            this.snake.move(snakeDirection);
 
         }
 
@@ -168,11 +168,11 @@ class Snake {
 
     }
 
-    move() {
-        if(snakeDirection == "LEFT")this.setHeadX((this._body[0].x - box)/box);
-        if(snakeDirection == "UP") this.setHeadY((this.getHeadY() - box)/box);
-        if(snakeDirection == "RIGHT") this.setHeadX((this.getHeadX() + box)/box);
-        if(snakeDirection == "DOWN") this.setHeadY((this.getHeadY() + box)/box);
+    move(direction) {
+        if(direction == "LEFT")this.setHeadX((this.getHeadX() - box)/box);
+        if(direction == "UP") this.setHeadY((this.getHeadY() - box)/box);
+        if(direction == "RIGHT") this.setHeadX((this.getHeadX() + box)/box);
+        if(direction == "DOWN") this.setHeadY((this.getHeadY() + box)/box);
     }
 }
 
