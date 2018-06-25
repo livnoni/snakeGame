@@ -114,7 +114,6 @@ class Game {
             this.sound = new Sound(soundPath);
             this.snake = snake;
             new BackgroundListener(this.sound);
-            this.apple = new Apple({score: config.appleScore});
             this.score = 0;
             this.gameOver;
     }
@@ -163,6 +162,7 @@ class Game {
 
     async startGame() {
         this.gameOver = false;
+        this.apple = new Apple({score: config.appleScore});
         while (!this.gameOver) {
             await timeout(config.gameSpeed);
             this.draw()
@@ -200,6 +200,7 @@ class Snake {
     constructor() {
         this._body = [];
         this.initialSnake();
+        console.log(`created new Snake class`);
     }
 
     initialSnake() {
