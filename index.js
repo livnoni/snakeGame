@@ -121,11 +121,12 @@ class Game {
             this.snake = snake;
             new BackgroundListener(this.sound);
             this.score = 0;
-            this.gameOver;
+            this.gameOver = false;
             _singleton = this;
         }else{
             console.log(`already exist Game!`);
             _singleton.snake = snake;
+            _singleton.score = 0;
             return _singleton
         }
 
