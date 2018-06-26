@@ -109,13 +109,26 @@ class Point {
 
 }
 
+var _singleton = null;
+/**
+ * Single-tone Class
+ */
 class Game {
     constructor(soundPath, snake) {
+        if(! _singleton){
+            console.log(`create new Game`);
             this.sound = new Sound(soundPath);
             this.snake = snake;
             new BackgroundListener(this.sound);
             this.score = 0;
             this.gameOver;
+            _singleton = this;
+        }else{
+            console.log(`already exist Game!`);
+            _singleton.snake = snake;
+            return _singleton
+        }
+
     }
 
     draw() {
@@ -177,6 +190,7 @@ class Game {
     _isFinish() {
         if (this.snake.getHeadX() < config.box || this.snake.getHeadX() > 17 * config.box || this.snake.getHeadY() < 3 * config.box || this.snake.getHeadY() > 17 * config.box || this._collision(this.snake.getHeadPosition())) {
             console.log("game over!");
+            snakeDirection = null;
             this.gameOver = true;
             this.sound.play("dead");
             // this.snake.destructor();
@@ -193,14 +207,13 @@ class Game {
 }
 
 
-/**
- * Single-tone Class
- */
+
 class Snake {
     constructor() {
         this._body = [];
         this.initialSnake();
         console.log(`created new Snake class`);
+        console.log("snake body=",this._body)
     }
 
     initialSnake() {
@@ -330,11 +343,14 @@ class Bonus extends Food {
 ////////////////////////////////////////////////////////////
 
 function onGameOver() {
-    snakeDirection = null;
     if (confirm("Do you want to play again ?")) {
+
         var game = new Game(config.soundPath, new Snake());
+        console.log("game=\n"+JSON.stringify(game))
         game.startGame();
+
     } else {
+
     }
 }
 
@@ -344,4 +360,5 @@ function onGameOver() {
 ////////////////////////////////////////////////////////////
 
 var game = new Game(config.soundPath, new Snake());
+console.log("game=\n"+JSON.stringify(game))
 game.startGame();
