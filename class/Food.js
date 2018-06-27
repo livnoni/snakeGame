@@ -40,3 +40,19 @@ class Bonus extends Food {
         return this.loadPic("img/food.png");
     }
 }
+
+/**
+ * Factory pattern
+ */
+class FoodFactory{
+    createFood(type,props){
+        switch(type){
+            case "apple":{
+                return new Apple(props.score);
+            }
+            case "bonus":{
+                return new Apple(props.score);
+            }
+        }
+    }
+}

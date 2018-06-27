@@ -9,6 +9,7 @@ class Game {
             this.snake = snake;
             this.background = new Background(config.groundPath);
             new BackgroundListener(this.sound);
+            this.foodFactory = new FoodFactory();
             this.score = 0;
             this.gameOver = false;
             Game._singleton = this;
@@ -16,7 +17,7 @@ class Game {
             console.log(`already exist Game!`);
             Game._singleton.snake = snake;
             Game._singleton.score = 0;
-            return Game._singleton
+            return Game._singleton;
         }
 
     }
@@ -51,7 +52,7 @@ class Game {
         if (this.snake.getHeadPosition().equal(this.apple.getPoint())) {
             this.sound.play("eat");
             this.score += this.apple.getScore();
-            this.apple = new Apple({score: config.appleScore});
+            this.apple = this.foodFactory.createFood("apple",{score:config.appleScore});
         } else {
             this.snake.pop();
         }
@@ -65,7 +66,7 @@ class Game {
 
     async startGame() {
         this.gameOver = false;
-        this.apple = new Apple({score: config.appleScore});
+        this.apple = this.foodFactory.createFood("apple",{score:config.appleScore});
         while (!this.gameOver) {
             await timeout(config.gameSpeed);
             this.draw()
