@@ -44,7 +44,7 @@ class Game {
             ctx.strokeRect(this.snake._body[i].x, this.snake._body[i].y, config.box, config.box);
         }
 
-        ctx.drawImage(Apple.getPic(), this.apple.getPoint().getX(), this.apple.getPoint().getY());
+        ctx.drawImage(Apple.getPic(), this.apple.getPoint().x, this.apple.getPoint().y);
 
         var newPosition = this.snake.move(snakeDirection);
 
