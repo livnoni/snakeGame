@@ -48,10 +48,10 @@ class FoodFactory{
     createFood(type,props){
         switch(type){
             case "apple":{
-                return new Apple(props.score);
+                return new Apple(props);
             }
             case "bonus":{
-                return new Apple(props.score);
+                return new Apple(props);
             }
         }
     }
