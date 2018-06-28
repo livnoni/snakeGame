@@ -1,24 +1,16 @@
 class Point {
     constructor(x, y) {
-        this.x = x * config.box;
-        this.y = y * config.box;
-        console.log(`created new Point[${this.x / config.box},${this.y / config.box}]`);
+        this._x = x * config.box;
+        this._y = y * config.box;
+        console.log(`created new Point[${this._x / config.box},${this._y / config.box}]`);
     }
 
-    getX() {
-        return this.x;
+    get x(){
+        return this._x;
     }
 
-    getY() {
-        return this.y;
-    }
-
-    setX(x) {
-        this.x = x * config.box;
-    }
-
-    setY(y) {
-        this.y = y * config.box;
+    get y(){
+        return this._y;
     }
 
     equal(point) {
