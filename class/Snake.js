@@ -19,19 +19,19 @@ class Snake {
     }
 
     getHeadX() {
-        return this._body[0].getX();
+        return this._body[0].x;
     }
 
     getHeadY() {
-        return this._body[0].getY();
+        return this._body[0].y;
     }
 
     setHeadX(x) {
-        this._body[0].x = x * config.box;
+        this._body[0]._x = x * config.box;
     }
 
     setHeadY(y) {
-        this._body[0].y = y * config.box;
+        this._body[0]._y = y * config.box;
     }
 
     getLength() {
@@ -55,12 +55,12 @@ class Snake {
         var tempPoint = this.getDeepHeadPosition();
 
         //which direction
-        if (direction == "LEFT") tempPoint.x -= config.box;
-        if (direction == "UP") tempPoint.y -= config.box;
-        if (direction == "RIGHT") tempPoint.x += config.box;
-        if (direction == "DOWN") tempPoint.y += config.box;
+        if (direction == "LEFT") tempPoint._x -= config.box;
+        if (direction == "UP") tempPoint._y -= config.box;
+        if (direction == "RIGHT") tempPoint._x += config.box;
+        if (direction == "DOWN") tempPoint._y += config.box;
 
-        return new Point(tempPoint.x / config.box, tempPoint.y / config.box);
+        return new Point(tempPoint._x / config.box, tempPoint._y / config.box);
     }
 
     include(point) {
