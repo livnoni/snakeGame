@@ -116,8 +116,8 @@ Game.ManageFood = class {
                 }
             }
             if (bonus && this.counter > (config.startGetBonusRandomAfterEatNumOfFood || 1)) {
+                this._foods.push(this.foodFactory.createFood(config.bonus.name, {score: config.bonus.score}));
                 sound.play("bonus");
-                this._foods.push(this.foodFactory.createFood(config.bonus.name, {score: config.bonus.score}))
             }
         }, timeout)
     }
@@ -154,15 +154,6 @@ Game.ManageFood = class {
                 Game.ManageFood.ctx.fillText(` = ${this._foods[i].getScore()}`, 16 * config.box, 1.1 * config.box);
                 Game.ManageFood.ctx.drawImage(this._foods[i].getPic(), 15 * config.box, 0.3 * config.box);
             }
-
-            // if (this._foods[i].strategy.hasTimeOut()) {
-            //     if(this._foods[i].score <= 0){
-            //         this._foods.splice(i, 1);
-            //     }
-            // } else {
-            //
-            // }
-
         }
     }
 
