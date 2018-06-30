@@ -3,7 +3,7 @@ class Snake {
         this._body = [];
         this.initialSnake();
         console.log(`created new Snake class`);
-        console.log("snake body=",this._body)
+        // console.log("snake body=",this._body)
     }
 
     initialSnake() {
