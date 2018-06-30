@@ -33,6 +33,7 @@ class Food {
 class Strategy{
     constructor(){
 
+
     }
     hasTimeOut(){
 
@@ -40,13 +41,20 @@ class Strategy{
 }
 
 class HasTimeOut extends Strategy{
-    constructor(){
+    constructor(bonus){
         super();
+        if (bonus) this.bonus = bonus;
+        this.decreaseScore();
     }
     hasTimeOut(){
         return true;
     }
     //todo: to add more logic for that case...
+    decreaseScore(){
+        setInterval(()=>{
+            if (this.bonus.score >= 0) this.bonus.score = this.bonus.score - 1;
+        },50);
+    }
 }
 
 class DoesntHasTimeOut extends Strategy{
@@ -96,11 +104,12 @@ class Watermelon extends Food {
 class Bonus extends Food {
     constructor(param) {
         super(param);
-        this.strategy = new HasTimeOut();
+        // console.log("bonus,this.score=",this.score)
+        this.strategy = new HasTimeOut(this);
     }
 
     getPic() {
-        return this.loadPic("img/apple.png");
+        return this.loadPic("img/bonus.png");
     }
 }
 
@@ -120,7 +129,7 @@ class FoodFactory{
                 return new Watermelon(props);
             }
             case "bonus":{
-                return new Apple(props);
+                return new Bonus(props);
             }
         }
     }
