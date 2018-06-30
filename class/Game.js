@@ -36,7 +36,7 @@ class Game {
         ctx.fillText("Livnoni Snake", 5 * config.box, 1.6 * config.box);
 
 
-        console.log("snake body=", this.snake._body);
+        // console.log("snake body=", this.snake._body);
 
 
         for (var i = 0; i < this.snake.getLength(); i++) {
@@ -85,7 +85,6 @@ class Game {
             snakeDirection = null;
             this.gameOver = true;
             this.sound.play("dead");
-            // this.snake.destructor();
             setTimeout(() => {
                 onGameOver();
             }, 100)
@@ -104,34 +103,65 @@ Game.ManageFood = class {
         this.foodFactory = new FoodFactory();
         this.counter = 0;
         this.addFood();
+        this.addBonus();
     }
 
-    addFood() {
+    addBonus(timeout, sound) {
+        setTimeout(() => {
+            var bonus = true;
+            console.log("this.counter=", this.counter)
+            for (var i = 0; i < this._foods.length; i++) {
+                if (this._foods instanceof Bonus) {
+                    bonus = false;
+                }
+            }
+            if (bonus && this.counter > (config.startGetBonusRandomAfterEatNumOfFood || 1)) {
+                sound.play("bonus");
+                this._foods.push(this.foodFactory.createFood(config.bonus.name, {score: config.bonus.score}))
+            }
+        }, timeout)
+    }
+
+    addFood(sound) {
         var newFood;
         if (this.counter % 2 == 0) {
             newFood = config.foods[0]; //the first one is an apple...
-        }else{
+        } else {
             newFood = config.foods[Math.floor(Math.random() * Math.floor(config.foods.length))];
         }
         this._foods.push(this.foodFactory.createFood(newFood.name, {score: newFood.score}));
         this.counter++;
+
+        var rand = (Math.floor(Math.random() * Math.floor(config.maxIntervalGetBonus || 10)) + 1) * 1000;
+
+        if(this.counter % (config.getBonusAfterEveryNumOfFood | 3) == 0) this.addBonus(rand, sound)
     }
 
     printFoods() {
+        // console.log("this._food=",this._foods)
         for (var i = 0; i < this._foods.length; i++) {
-            if (this._foods[i].strategy.hasTimeOut()) {
-
-            } else {
-
-            }
             Game.ManageFood.ctx.drawImage(this._foods[i].getPic(), this._foods[i].getPoint().x, this._foods[i].getPoint().y);
-
-
             Game.ManageFood.ctx.fillStyle = "white";
             Game.ManageFood.ctx.font = "30px Change one";
-            Game.ManageFood.ctx.fillText(` = ${this._foods[i].getScore()}`, 16 * config.box, 1.6 * config.box);
-            Game.ManageFood.ctx.drawImage(this._foods[i].getPic(), 15 * config.box, 0.7 * config.box);
 
+            /**
+             * Dynamically check what object class:
+             */
+            if (this._foods[i].constructor.name == "Bonus") {
+                Game.ManageFood.ctx.fillText(` = ${this._foods[i].getScore()}`, 16 * config.box, 2.2 * config.box);
+                Game.ManageFood.ctx.drawImage(this._foods[i].getPic(), 15 * config.box, 1.3 * config.box);
+            } else {
+                Game.ManageFood.ctx.fillText(` = ${this._foods[i].getScore()}`, 16 * config.box, 1.1 * config.box);
+                Game.ManageFood.ctx.drawImage(this._foods[i].getPic(), 15 * config.box, 0.3 * config.box);
+            }
+
+            // if (this._foods[i].strategy.hasTimeOut()) {
+            //     if(this._foods[i].score <= 0){
+            //         this._foods.splice(i, 1);
+            //     }
+            // } else {
+            //
+            // }
 
         }
     }
@@ -139,13 +169,24 @@ Game.ManageFood = class {
     eat(snake, sound, score) {
         // console.log("gotScore=",score);
         for (var i = 0; i < this._foods.length; i++) {
+            if (this._foods[i].score <= 0) {
+                this._foods.splice(i, 1);
+                i--;
+            }
+        }
+
+
+        for (var i = 0; i < this._foods.length; i++) {
             if (snake.getHeadPosition().equal(this._foods[i].getPoint())) {
                 sound.play("eat");
-                // score += this._foods[i].getScore();
+                var tempfood = this._foods[i];
                 this._foods.splice(i, 1);
-                // this._foods.push(this.foodFactory.createFood("apple", {score: config.appleScore}));
-                this.addFood();
-                return {status: true, score: score + this._foods[i].getScore()};
+                if (tempfood instanceof Bonus) {
+                    return {status: true, score: score + tempfood.getScore()};
+                } else {
+                    this.addFood(sound);
+                    return {status: true, score: score + tempfood.getScore()};
+                }
             }
         }
         return {status: false};
