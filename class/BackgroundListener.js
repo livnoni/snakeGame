@@ -4,19 +4,24 @@ class BackgroundListener {
         var self = this;
 
         function direction(event) {
-            if (event.keyCode == 37 && snakeDirection != "RIGHT") {
+
+            window.alert("keydown="+event);
+
+
+
+            if ((event.keyCode == 37 || event.keyCode == 65) && snakeDirection != "RIGHT") {
                 snakeDirection = "LEFT";
                 self.toString();
                 sound.play("left");
-            } else if (event.keyCode == 38 && snakeDirection != "DOWN") {
+            } else if ((event.keyCode == 38 || event.keyCode == 87) && snakeDirection != "DOWN") {
                 snakeDirection = "UP";
                 self.toString();
                 sound.play("up");
-            } else if (event.keyCode == 39 && snakeDirection != "LEFT") {
+            } else if ((event.keyCode == 39 || event.keyCode == 68) && snakeDirection != "LEFT") {
                 snakeDirection = "RIGHT";
                 self.toString();
                 sound.play("right");
-            } else if (event.keyCode == 40 && snakeDirection != "UP") {
+            } else if ((event.keyCode == 40 || event.keyCode == 83) && snakeDirection != "UP") {
                 snakeDirection = "DOWN";
                 self.toString();
                 sound.play("down");
