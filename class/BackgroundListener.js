@@ -18,8 +18,6 @@ class BackgroundListener {
 
 
         //this for mobiles:
-
-
         document.addEventListener('touchstart', handleTouchStart, false);
         document.addEventListener('touchmove', handleTouchMove, false);
 
