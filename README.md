@@ -8,5 +8,5 @@ The game use the famous Designs pattern (Factory, Singleton, Config, Rest API, S
 
 ### This is a great example of JS classes using ec6.
 
-##### Here you can view the UML Diagram of the game:   [UML Diagram](https://github.com/livnoni/snakeGame/blob/master/snakeUmlDiagram.html)
+##### Here you can view the UML Diagram of the game:   [UML Diagram](https://htmlpreview.github.io/?https://raw.githubusercontent.com/livnoni/snakeGame/master/snakeUmlDiagram.html)
 
