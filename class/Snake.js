@@ -26,14 +26,6 @@ class Snake {
         return this._body[0].y;
     }
 
-    setHeadX(x) {
-        this._body[0]._x = x * config.box;
-    }
-
-    setHeadY(y) {
-        this._body[0]._y = y * config.box;
-    }
-
     getLength() {
         return this._body.length;
     }
