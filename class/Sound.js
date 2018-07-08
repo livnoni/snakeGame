@@ -1,3 +1,5 @@
+//todo: what is the name of this pattern?
+
 class Sound {
     constructor(soundPath) {
         var counter = 0;
