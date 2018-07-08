@@ -12,10 +12,6 @@ class Food {
         return this.score;
     }
 
-    ContextInterface (){
-        this.strategy.AlgorithmInterface()
-    }
-
     loadPic(path) {
         var img = new Image();
         img.src = path;
@@ -26,13 +22,12 @@ class Food {
 
 /**
  * Strategy Patern
- * I use thi pattern To determine for each object (food) whether it has a timeout or that it exists until it is eaten.
+ * I use this pattern To determine for each object (food) whether it has a timeout or that it exists until it is eaten.
    In this way I can add or change objects without writing the timeout to each one and saving 'double coding'
  */
 
 class Strategy{
     constructor(){
-
 
     }
     hasTimeOut(){
