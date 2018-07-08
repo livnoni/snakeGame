@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <title>Yehuda Snake Game</title>
     <style>
-        canvas {
+        canvas, div{
             padding-left: 0;
             padding-right: 0;
             margin-left: auto;
@@ -13,9 +13,15 @@
             display: block;
             width: 608px;
         }
+
     </style>
 </head>
 <body>
+<div id="menu">
+    <button id="pauseBtn" style="height: 50px">pause</button>
+    <button id="startOverBtn" style="height: 50px">start again</button>
+    <a href="snakeUmlDiagram.html" target="_blank">View Snake UML Diagram</a>
+</div>
 <div id="gameDiv">
     <canvas id="snake" width="608" height="608" ></canvas>
 </div>
