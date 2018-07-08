@@ -8,12 +8,15 @@ class Game {
             this.sound = new Sound(soundPath);
             this.snake = snake;
             this.background = new Background(config.groundPath);
-            new BackgroundListener(this.sound);
+            this.backgroundListener = new BackgroundListener(this.sound, this.pauseGameListener);
             this.foodFactory = new FoodFactory();
             this.score = 0;
             this.manageFood = new Game.ManageFood();
             this.gameOver = false;
+            this.pauseGame = false;
+            // this.pauseGameListener();
             Game._singleton = this;
+
         } else {
             console.log(`already exist Game!`);
             Game._singleton.snake = snake;
@@ -69,14 +72,35 @@ class Game {
         this.gameOver = false;
         this.apple = this.foodFactory.createFood("apple", {score: config.appleScore});
         while (!this.gameOver) {
-            await timeout(config.gameSpeed);
-            this.draw()
+            if(this.pauseGame){
+                await timeout(config.gameSpeed);
+                // this.draw();
+            }else{
+                await timeout(config.gameSpeed);
+                this.draw();
+            }
+
         }
 
         function timeout(ms) {
             return new Promise(resolve => setTimeout(resolve, ms));
         }
 
+    }
+
+    pauseGameListener(){
+        var self = this;
+        document.getElementById("pauseBtn").addEventListener("click", function(){
+            var status = document.getElementById("pauseBtn").innerHTML;
+            console.log("status=",status)
+            if(status == "pause"){
+                game.pauseGame = true;
+                document.getElementById("pauseBtn").innerHTML = "continue";
+            }else{
+                game.pauseGame = false;
+                document.getElementById("pauseBtn").innerHTML = "pause";
+            }
+        });
     }
 
     _isFinish() {
@@ -103,7 +127,7 @@ Game.ManageFood = class {
         this.foodFactory = new FoodFactory();
         this.counter = 0;
         this.addFood();
-        this.addBonus();
+        // this.addBonus();
     }
 
     addBonus(timeout, sound) {
