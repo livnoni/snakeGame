@@ -11,15 +11,11 @@ const config = {
     },
     groundPath: "img/ground.png",
     gameSpeed: 100,
-    // appleScore: 10,
-    // bananaScore: 15,
-    // watermelonScore: 20,
     foods: [{name: "apple", score: 10}, {name: "banana", score: 15}, {name: "watermelon", score: 20}],
     bonus:{name:"bonus", score:100},
     startGetBonusRandomAfterEatNumOfFood : 1,
     getBonusAfterEveryNumOfFood: 3,
     maxIntervalGetBonus: 10
-
 };
 
 //GLOBAL VARIABLES:
