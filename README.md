@@ -1,4 +1,12 @@
-"# snakeGame" 
-1) we use babel to comlile ec6 in every browser. (`<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.min.js"></script>`)
-2) This OOP with the following design patterns:
-3) //notes: thier isnt realy destructor  in Js , delete operator can only deleter properties, not the object inself.
+# JS Snake game
+## Design Pasterns - Final Project
+
+##### You can play the game  [Here](http://htmlpreview.github.io/?https://github.com/livnoni/snakeGame/blob/master/index.html)
+
+This game written using ec6, fully object oriented.
+The game use the famous Designs pattern (Factory, Singleton, Config, Rest API, Strategy etc...)
+
+### This is a great example of JS classes using ec6.
+
+##### Here you can view the UML Diagram of the game:   [UML Diagram](https://github.com/livnoni/snakeGame/blob/master/snakeUmlDiagram.html)
+
