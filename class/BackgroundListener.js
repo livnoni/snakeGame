@@ -1,9 +1,11 @@
 class BackgroundListener {
     constructor(sound) {
         this.sound = sound;
+        this.listen = true;
 
         this.keyboardListener();
         this.touchListener();
+        this.pauseGameListener();
 
     }
 
@@ -14,6 +16,8 @@ class BackgroundListener {
 
         function direction(event) {
 
+            console.log("event.keyCode=", event.keyCode)
+
             if ((event.keyCode == 37 || event.keyCode == 65) && snakeDirection != "RIGHT") {
                 self.move("left");
             } else if ((event.keyCode == 38 || event.keyCode == 87) && snakeDirection != "DOWN") {
@@ -22,6 +26,8 @@ class BackgroundListener {
                 self.move("right");
             } else if ((event.keyCode == 40 || event.keyCode == 83) && snakeDirection != "UP") {
                 self.move("down");
+            } else if (event.keyCode == 80) {
+                self._pauseGmae();
             }
         }
     }
@@ -76,9 +82,29 @@ class BackgroundListener {
     }
 
     move(direction) {
-        snakeDirection = direction.toUpperCase();
-        this.toString();
-        this.sound.play(direction.toLowerCase());
+        if (this.listen) {
+            snakeDirection = direction.toUpperCase();
+            this.toString();
+            this.sound.play(direction.toLowerCase());
+        }
+    }
+
+    pauseGameListener() {
+        var self = this;
+        document.getElementById("pauseBtn").addEventListener("click", function () {
+            this._pauseGmae();
+        });
+    }
+
+    _pauseGmae(){
+        var status = document.getElementById("pauseBtn").innerHTML;
+        if (status == "pause") {
+            Game.pause(self);
+            document.getElementById("pauseBtn").innerHTML = "continue";
+        } else {
+            Game.resume(self);
+            document.getElementById("pauseBtn").innerHTML = "pause";
+        }
     }
 
     toString() {
