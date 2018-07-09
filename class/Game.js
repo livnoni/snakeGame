@@ -8,7 +8,7 @@ class Game {
             this.sound = new Sound(soundPath);
             this.snake = snake;
             this.background = new Background(config.groundPath);
-            this.backgroundListener = new BackgroundListener(this.sound, this.pauseGameListener);
+            this.backgroundListener = new BackgroundListener(this.sound);
             this.foodFactory = new FoodFactory();
             this.score = 0;
             this.manageFood = new Game.ManageFood();
@@ -88,21 +88,6 @@ class Game {
 
     }
 
-    pauseGameListener(){
-        var self = this;
-        document.getElementById("pauseBtn").addEventListener("click", function(){
-            var status = document.getElementById("pauseBtn").innerHTML;
-            console.log("status=",status)
-            if(status == "pause"){
-                game.pauseGame = true;
-                document.getElementById("pauseBtn").innerHTML = "continue";
-            }else{
-                game.pauseGame = false;
-                document.getElementById("pauseBtn").innerHTML = "pause";
-            }
-        });
-    }
-
     _isFinish() {
         if (this.snake.getHeadX() < config.box || this.snake.getHeadX() > 17 * config.box || this.snake.getHeadY() < 3 * config.box || this.snake.getHeadY() > 17 * config.box || this._collision(this.snake.getHeadPosition())) {
             console.log("game over!");
@@ -120,6 +105,16 @@ class Game {
     }
 }
 
+Game.pause = function(backgroundListener){
+    game.pauseGame = true;
+    backgroundListener.listen = false;
+};
+
+Game.resume = function(backgroundListener){
+    game.pauseGame = false;
+    backgroundListener.listen = true;
+};
+
 Game._singleton = null;
 Game.ManageFood = class {
     constructor() {
@@ -127,7 +122,6 @@ Game.ManageFood = class {
         this.foodFactory = new FoodFactory();
         this.counter = 0;
         this.addFood();
-        // this.addBonus();
     }
 
     addBonus(timeout, sound) {
