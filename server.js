@@ -12,7 +12,7 @@ var MongoClient = require('mongodb').MongoClient;
 function writeToDB(obj, collectionName){
     MongoClient.connect(process.env.mongoUrl, function(err, db) {
         if (err) throw err;
-        var dbo = db.db("snakeGame");
+        var dbo = db.db("snakegame");
         dbo.collection(collectionName).insertOne(obj, function(err, res) {
             if (err) throw err;
             console.log(`1 document inserted -> [${JSON.stringify(obj)}]`);
@@ -22,10 +22,19 @@ function writeToDB(obj, collectionName){
 }
 
 
-app.get('/score', function (req, res) {
+app.get('/score', async function (req, res) {
     console.log("got /score request.");
-    var temp = [{name: "yehuda", score: 400}, {name: "sharon", score: 300}, {name: "yarden", score: 200}, {name: "boaz", score: 100}];
-    res.end(JSON.stringify(temp))
+
+    MongoClient.connect(process.env.mongoUrl, function(err, db) {
+        if (err) throw err;
+        var dbo = db.db("snakegame");
+        dbo.collection("scores").find({}).toArray(function(err, result) {
+            if (err) throw err;
+            console.log(result);
+            db.close();
+            res.end(JSON.stringify(result));
+        });
+    });
 });
 
 app.post('/sendScore', function(req, res) {
@@ -37,11 +46,7 @@ app.post('/sendScore', function(req, res) {
     var score = req.body.score;
 
     writeToDB({name , score}, "scores");
-
-
     //send to DB:
-
-
     res.send("succsefully got score="+score+" to "+name);
 });
 
