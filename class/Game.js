@@ -127,9 +127,8 @@ Game.ManageFood = class {
     addBonus(timeout, sound) {
         setTimeout(() => {
             var bonus = true;
-            console.log("this.counter=", this.counter)
             for (var i = 0; i < this._foods.length; i++) {
-                if (this._foods instanceof Bonus) {
+                if (this._foods[i] instanceof Bonus) {
                     bonus = false;
                 }
             }
