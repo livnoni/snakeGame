@@ -8,6 +8,16 @@ app.get('/score', function (req, res) {
     res.end(JSON.stringify(temp))
 });
 
+app.post('/sendScore', function(req, res) {
+    console.log("got post sendScore");
+
+    var name = req.body.name;
+    var score = req.body.score;
+
+    res.send("succsefully got score="+score+" to "+name);
+});
+
+
 // Initialize the app.
 var server = app.listen(process.env.PORT || 8080, function () {
     var port = server.address().port;
