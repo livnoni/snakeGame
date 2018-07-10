@@ -1,6 +1,6 @@
 class Food {
     constructor(param) {
-        this.position = new Point(Math.floor(Math.random() * 17 + 1), Math.floor(Math.random() * 15 + 3));
+        this.position = this.createRandonPoint(param.snakeBody);
         this.score = param.score;
     }
 
@@ -10,6 +10,23 @@ class Food {
 
     getScore() {
         return this.score;
+    }
+
+    createRandonPoint(snakeBody){
+        var randomX = Math.floor(Math.random() * 17 + 1);
+        var randomY = Math.floor(Math.random() * 15 + 3);
+
+        var randomPoint = new Point(randomX, randomY);
+
+        ///check that the new random point does't inside the snake body, if yes, recall to createRandonPoint
+        var include = false;
+        for(var i =0; i<snakeBody.length; i++){
+            if(snakeBody[i].equal(randomPoint)){
+                include = true;
+                break;
+            }
+        }
+        return (!include) ? randomPoint : this.createRandonPoint(snakeBody);
     }
 
     loadPic(path) {

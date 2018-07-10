@@ -11,7 +11,7 @@ class Game {
             this.backgroundListener = new BackgroundListener(this.sound);
             this.foodFactory = new FoodFactory();
             this.score = 0;
-            this.manageFood = new Game.ManageFood();
+            this.manageFood = new Game.ManageFood(this.snake);
             this.gameOver = false;
             this.pauseGame = false;
             // this.pauseGameListener();
@@ -21,7 +21,7 @@ class Game {
             console.log(`already exist Game!`);
             Game._singleton.snake = snake;
             Game._singleton.score = 0;
-            Game._singleton.manageFood = new Game.ManageFood();
+            Game._singleton.manageFood = new Game.ManageFood(Game._singleton.snake);
             return Game._singleton;
         }
 
@@ -70,7 +70,7 @@ class Game {
 
     async startGame() {
         this.gameOver = false;
-        this.apple = this.foodFactory.createFood("apple", {score: config.appleScore});
+        this.apple = this.foodFactory.createFood("apple", {score: config.appleScore, snakeBody:this.snake.getSnakeBody()});
         while (!this.gameOver) {
             if(this.pauseGame){
                 await timeout(config.gameSpeed);
@@ -117,7 +117,8 @@ Game.resume = function(backgroundListener){
 
 Game._singleton = null;
 Game.ManageFood = class {
-    constructor() {
+    constructor(snake) {
+        this.snake = snake;
         this._foods = [];
         this.foodFactory = new FoodFactory();
         this.counter = 0;
@@ -133,7 +134,7 @@ Game.ManageFood = class {
                 }
             }
             if (bonus && this.counter > (config.startGetBonusRandomAfterEatNumOfFood || 1)) {
-                this._foods.push(this.foodFactory.createFood(config.bonus.name, {score: config.bonus.score}));
+                this._foods.push(this.foodFactory.createFood(config.bonus.name, {score: config.bonus.score, snakeBody:this.snake.getSnakeBody()}));
                 sound.play("bonus");
             }
         }, timeout)
@@ -146,7 +147,7 @@ Game.ManageFood = class {
         } else {
             newFood = config.foods[Math.floor(Math.random() * Math.floor(config.foods.length))];
         }
-        this._foods.push(this.foodFactory.createFood(newFood.name, {score: newFood.score}));
+        this._foods.push(this.foodFactory.createFood(newFood.name, {score: newFood.score, snakeBody:this.snake.getSnakeBody()}));
         this.counter++;
 
         var rand = (Math.floor(Math.random() * Math.floor(config.maxIntervalGetBonus || 10)) + 1) * 1000;

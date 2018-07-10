@@ -30,6 +30,10 @@ class Snake {
         return this._body.length;
     }
 
+    getSnakeBody(){
+        return this._body;
+    }
+
     /**
      * add new body using unshift function (new variable at position 0, shift all the elements right...)
      * @param point
