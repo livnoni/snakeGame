@@ -8,10 +8,8 @@ app.get('/score', function (req, res) {
     res.end(JSON.stringify(temp))
 });
 
-var server = app.listen(8080, function () {
-
-    var host = server.address().address;
+// Initialize the app.
+var server = app.listen(process.env.PORT || 8080, function () {
     var port = server.address().port;
-    console.log("Example app listening at http://%s:%s", host, port)
-
+    console.log("App now running on port", port);
 });
