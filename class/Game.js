@@ -95,7 +95,7 @@ class Game {
             this.gameOver = true;
             this.sound.play("dead");
             setTimeout(() => {
-                onGameOver();
+                onGameOver({score: this.score});
             }, 100)
         }
     }
