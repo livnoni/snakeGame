@@ -6,6 +6,7 @@ class BackgroundListener {
         this.keyboardListener();
         this.touchListener();
         this.pauseGameListener();
+        this.viewScoresListener();
 
     }
 
@@ -105,6 +106,38 @@ class BackgroundListener {
             Game.resume(self);
             document.getElementById("pauseBtn").innerHTML = "pause";
         }
+    }
+
+    viewScoresListener() {
+        var self = this;
+        document.getElementById("viewScores").addEventListener("click", function () {
+            self._httpGetAsync("http://localhost:5000/score", (data)=>{
+                console.log("got:",data);
+                data = JSON.parse(data);
+                // document.getElementById("scores").innerText = data
+
+                var txt ="";
+                txt += "<table border='1'>"
+                for (var x in data) {
+                    txt += "<tr><td> name: " + data[x].name + ", score:"+data[x].score+"</td></tr>";
+                }
+                txt += "</table>"
+                document.getElementById("scores").innerHTML = txt;
+
+            })
+
+        });
+    }
+
+    _httpGetAsync(theUrl, callback)
+    {
+        var xmlHttp = new XMLHttpRequest();
+        xmlHttp.onreadystatechange = function() {
+            if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+                callback(xmlHttp.responseText);
+        }
+        xmlHttp.open("GET", theUrl, true); // true for asynchronous
+        xmlHttp.send(null);
     }
 
     toString() {
