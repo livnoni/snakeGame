@@ -11,7 +11,6 @@ function onGameOver(data) {
 
     var xhr = new XMLHttpRequest();
     xhr.open("POST", "https://livnonisnake.herokuapp.com/sendScore", true);
-    xhr.open("POST", "http://localhost:5000/sendScore", true);
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.send(JSON.stringify(data));
 

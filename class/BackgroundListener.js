@@ -111,7 +111,7 @@ class BackgroundListener {
     viewScoresListener() {
         var self = this;
         document.getElementById("viewScores").addEventListener("click", function () {
-            self._httpGetAsync("http://localhost:5000/score", (data)=>{
+            self._httpGetAsync("https://livnonisnake.herokuapp.com/score", (data)=>{
                 console.log("got:",data);
                 data = JSON.parse(data);
                 // document.getElementById("scores").innerText = data
