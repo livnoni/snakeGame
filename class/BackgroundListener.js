@@ -7,6 +7,9 @@ class BackgroundListener {
         this.touchListener();
         this.pauseGameListener();
         this.viewScoresListener();
+        this.downloadScoresAsCSV();
+        this._downloadScoresAndShow();
+
 
     }
 
@@ -97,6 +100,12 @@ class BackgroundListener {
         });
     }
 
+    downloadScoresAsCSV() {
+        document.getElementById("downloadScores").addEventListener("click", function () {
+            $("#example-table").tabulator("download", "csv", "data.csv"); //download table data as a CSV formatted file with a file name of data.csv
+        });
+    }
+
     _pauseGmae(){
         var status = document.getElementById("pauseBtn").innerHTML;
         if (status == "pause") {
@@ -111,22 +120,22 @@ class BackgroundListener {
     viewScoresListener() {
         var self = this;
         document.getElementById("viewScores").addEventListener("click", function () {
-            self._httpGetAsync("https://livnonisnake.herokuapp.com/score", (data)=>{
-                console.log("got:",data);
-                data = JSON.parse(data);
-                // document.getElementById("scores").innerText = data
-
-                var txt ="";
-                txt += "<table border='1'>"
-                for (var x in data) {
-                    txt += "<tr><td> name: " + data[x].name + ", score:"+data[x].score+"</td></tr>";
-                }
-                txt += "</table>"
-                document.getElementById("scores").innerHTML = txt;
-
-            })
-
+            self._downloadScoresAndShow();
         });
+    }
+
+    _downloadScoresAndShow(){
+        this._httpGetAsync(`${config.nodeServerAddress}/scores`, (data)=>{
+            console.log("got:",data);
+            data = JSON.parse(data)
+            for(var i=0; i<data.length; i++){
+                data[i].mark = data[i].score/100;
+                data[i].id = i+1;
+            }
+            document.getElementById("downloadScores").disabled = false;
+            //load sample data into the table
+            $("#example-table").tabulator("setData", data);
+        })
     }
 
     _httpGetAsync(theUrl, callback)
