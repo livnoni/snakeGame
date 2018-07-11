@@ -1,5 +1,4 @@
 function onGameOver(data) {
-    var username;
     var username = prompt("Please enter your name:", "your name");
     if (username == null || username == "") {
         console.log("User cancelled the prompt.")
@@ -7,12 +6,14 @@ function onGameOver(data) {
         console.log("username=",username)
         console.log("data=",Object.assign(data,{name:username}));
 
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", `${config.nodeServerAddress}/sendScore`, true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.send(JSON.stringify(data));
+
     }
 
-    var xhr = new XMLHttpRequest();
-    xhr.open("POST", "https://livnonisnake.herokuapp.com/sendScore", true);
-    xhr.setRequestHeader('Content-Type', 'application/json');
-    xhr.send(JSON.stringify(data));
+
 
 
 

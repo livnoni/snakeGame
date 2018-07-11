@@ -23,7 +23,7 @@ function writeToDB(obj) {
 }
 
 
-app.get('/score', async function (req, res) {
+app.get('/scores', async function (req, res) {
     console.log("got /score request.");
     MongoClient.connect(process.env.mongoUrl, function(err, db) {
         if (err) throw err;
