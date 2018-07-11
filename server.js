@@ -1,3 +1,4 @@
+var config = {DataBaseName: "snakegame", collection: "scores"};
 var express = require('express');
 var cors = require('cors');
 var bodyParser = require("body-parser");
@@ -9,11 +10,11 @@ app.use(bodyParser.urlencoded({extended: true})); // support encoded bodies
 
 var MongoClient = require('mongodb').MongoClient;
 
-function writeToDB(obj, collectionName){
+function writeToDB(obj) {
     MongoClient.connect(process.env.mongoUrl, function(err, db) {
         if (err) throw err;
-        var dbo = db.db("snakegame");
-        dbo.collection(collectionName).insertOne(obj, function(err, res) {
+        var dbo = db.db(config.DataBaseName);
+        dbo.collection(config.collection).insertOne(obj, function (err, res) {
             if (err) throw err;
             console.log(`1 document inserted -> [${JSON.stringify(obj)}]`);
             db.close();
@@ -24,11 +25,10 @@ function writeToDB(obj, collectionName){
 
 app.get('/score', async function (req, res) {
     console.log("got /score request.");
-
     MongoClient.connect(process.env.mongoUrl, function(err, db) {
         if (err) throw err;
-        var dbo = db.db("snakegame");
-        dbo.collection("scores").find({}).toArray(function(err, result) {
+        var dbo = db.db(config.DataBaseName);
+        dbo.collection(config.collection).find({}).toArray(function (err, result) {
             if (err) throw err;
             console.log(result);
             db.close();
@@ -37,17 +37,15 @@ app.get('/score', async function (req, res) {
     });
 });
 
-app.post('/sendScore', function(req, res) {
+app.post('/sendScore', function (req, res) {
     console.log("got post sendScore");
-    console.log("req.body=",req.body);
-
 
     var name = req.body.name;
     var score = req.body.score;
 
-    writeToDB({name , score}, "scores");
+    writeToDB({name, score}, "scores");
     //send to DB:
-    res.send("succsefully got score="+score+" to "+name);
+    res.send("succsefully got score=" + score + " to " + name);
 });
 
 
