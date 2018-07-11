@@ -90,6 +90,7 @@ class Game {
 
     _isFinish() {
         if (this.snake.getHeadX() < config.box || this.snake.getHeadX() > 17 * config.box || this.snake.getHeadY() < 3 * config.box || this.snake.getHeadY() > 17 * config.box || this._collision(this.snake.getHeadPosition())) {
+            this.backgroundListener._downloadScoresAndShow();
             console.log("game over!");
             snakeDirection = null;
             this.gameOver = true;
