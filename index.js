@@ -3,7 +3,8 @@ function onGameOver(data) {
     if (username == null || username == "") {
         console.log("User cancelled the prompt.")
     } else {
-        console.log("username=",username)
+        if(username == "your name") username = "Unknown Player";
+        console.log("username=",username);
         console.log("data=",Object.assign(data,{name:username}));
 
         var xhr = new XMLHttpRequest();
