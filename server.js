@@ -48,6 +48,26 @@ app.post('/sendScore', function (req, res) {
     res.send("succsefully got score=" + score + " to " + name);
 });
 
+app.post('/deleteScore', function (req, res) {
+    console.log("got delete deleteScore");
+
+    var name = req.body.name;
+    var score = req.body.score;
+
+    MongoClient.connect(process.env.mongoUrl, function(err, db) {
+        if (err) throw err;
+        var dbo = db.db(config.DataBaseName);
+        var myquery = { name: name, score: score };
+        dbo.collection(config.collection).deleteOne(myquery, function(err, obj) {
+            if (err) throw err;
+            console.log("1 document deleted");
+            db.close();
+            res.send("successfully delete score=" + score + " to " + name);
+        });
+    });
+
+});
+
 
 // Initialize the app.
 var server = app.listen(process.env.PORT || 8080, function () {
