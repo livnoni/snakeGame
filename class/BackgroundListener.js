@@ -9,7 +9,7 @@ class BackgroundListener {
         this.viewScoresListener();
         this.downloadScoresAsCSV();
         this._downloadScoresAndShow();
-
+        this.disableArrowKeys();
 
     }
 
@@ -138,8 +138,7 @@ class BackgroundListener {
         })
     }
 
-    _httpGetAsync(theUrl, callback)
-    {
+    _httpGetAsync(theUrl, callback) {
         var xmlHttp = new XMLHttpRequest();
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
@@ -147,6 +146,15 @@ class BackgroundListener {
         }
         xmlHttp.open("GET", theUrl, true); // true for asynchronous
         xmlHttp.send(null);
+    }
+
+    disableArrowKeys(){
+        window.addEventListener("keydown", function(e) {
+            // space and arrow keys
+            if([32, 37, 38, 39, 40].indexOf(e.keyCode) > -1) {
+                e.preventDefault();
+            }
+        }, false);
     }
 
     toString() {
