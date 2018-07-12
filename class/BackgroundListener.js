@@ -102,7 +102,7 @@ class BackgroundListener {
 
     downloadScoresAsCSV() {
         document.getElementById("downloadScores").addEventListener("click", function () {
-            $("#example-table").tabulator("download", "csv", "data.csv"); //download table data as a CSV formatted file with a file name of data.csv
+            $("#score-table").tabulator("download", "csv", "data.csv"); //download table data as a CSV formatted file with a file name of data.csv
         });
     }
 
@@ -134,7 +134,7 @@ class BackgroundListener {
             }
             document.getElementById("downloadScores").disabled = false;
             //load sample data into the table
-            $("#example-table").tabulator("setData", data);
+            $("#score-table").tabulator("setData", data);
         })
     }
 
