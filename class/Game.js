@@ -94,6 +94,7 @@ class Game {
             console.log("game over!");
             snakeDirection = null;
             this.gameOver = true;
+            this.manageFood.onGameOver();
             this.sound.play("dead");
             setTimeout(() => {
                 onGameOver({score: this.score});
@@ -123,22 +124,24 @@ Game.ManageFood = class {
         this._foods = [];
         this.foodFactory = new FoodFactory();
         this.counter = 0;
+        this.bonusTimeOut = [];
         this.addFood();
     }
 
     addBonus(timeout, sound) {
-        setTimeout(() => {
+        this.bonusTimeOut.push(setTimeout(() => {
             var bonus = true;
             for (var i = 0; i < this._foods.length; i++) {
                 if (this._foods[i] instanceof Bonus) {
                     bonus = false;
                 }
             }
+
             if (bonus && this.counter > (config.startGetBonusRandomAfterEatNumOfFood || 1)) {
                 this._foods.push(this.foodFactory.createFood(config.bonus.name, {score: config.bonus.score, snakeBody:this.snake.getSnakeBody()}));
                 sound.play("bonus");
             }
-        }, timeout)
+        }, timeout));
     }
 
     addFood(sound) {
@@ -200,6 +203,12 @@ Game.ManageFood = class {
             }
         }
         return {status: false};
+    }
+
+    onGameOver(){
+        for(var i=0; i<this.bonusTimeOut.length; i++){
+            clearTimeout(this.bonusTimeOut[i]);
+        }
     }
 
 

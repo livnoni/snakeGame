@@ -13,7 +13,7 @@ const config = {
     gameSpeed: 100,
     foods: [{name: "apple", score: 10}, {name: "banana", score: 15}, {name: "watermelon", score: 20}],
     bonus:{name:"bonus", score:100},
-    startGetBonusRandomAfterEatNumOfFood : 1,
+    startGetBonusRandomAfterEatNumOfFood : 3,
     getBonusAfterEveryNumOfFood: 3,
     maxIntervalGetBonus: 10,
     nodeServerAddress: "https://livnonisnake.herokuapp.com"
