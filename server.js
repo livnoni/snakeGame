@@ -57,8 +57,7 @@ app.post('/deleteScore', function (req, res) {
     MongoClient.connect(process.env.mongoUrl, function(err, db) {
         if (err) throw err;
         var dbo = db.db(config.DataBaseName);
-        var myquery = { name: name, score: score };
-        dbo.collection(config.collection).deleteOne(myquery, function(err, obj) {
+        dbo.collection(config.collection).deleteOne({name: name, score:Number(score)}, function(err, obj) {
             if (err) throw err;
             console.log("1 document deleted");
             db.close();
