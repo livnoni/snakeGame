@@ -135,6 +135,7 @@ class BackgroundListener {
             document.getElementById("downloadScores").disabled = false;
             //load sample data into the table
             $("#score-table").tabulator("setData", data);
+            scores = data;
         })
     }
 

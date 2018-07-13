@@ -14,6 +14,7 @@ class Game {
             this.manageFood = new Game.ManageFood(this.snake);
             this.gameOver = false;
             this.pauseGame = false;
+            this.relativeScore = null;
             // this.pauseGameListener();
             Game._singleton = this;
 
@@ -22,6 +23,7 @@ class Game {
             Game._singleton.snake = snake;
             Game._singleton.score = 0;
             Game._singleton.manageFood = new Game.ManageFood(Game._singleton.snake);
+            Game._singleton.relativeScore = null;
             return Game._singleton;
         }
 
@@ -37,9 +39,9 @@ class Game {
         ctx.font = "48px Change one";
         ctx.fillText(this.score, 2 * config.box, 1.6 * config.box);
         ctx.fillText("Livnoni Snake", 5 * config.box, 1.6 * config.box);
-
-
-        // console.log("snake body=", this.snake._body);
+        ctx.fillStyle = "white";
+        ctx.font = "30px Change one";
+        if(this.relativeScore) ctx.fillText(`Your rate is ${(this.relativeScore)}`, 6 * config.box, 18.8 * config.box);
 
 
         for (var i = 0; i < this.snake.getLength(); i++) {
@@ -57,6 +59,7 @@ class Game {
         var isEaten = this.manageFood.eat(this.snake, this.sound, this.score);
         if (isEaten.status) {
             this.score = isEaten.score;
+            this.relativeScore = this._GetRelativeRateResults(this.score);
         } else {
             this.snake.pop();
         }
@@ -70,12 +73,15 @@ class Game {
 
     async startGame() {
         this.gameOver = false;
-        this.apple = this.foodFactory.createFood("apple", {score: config.appleScore, snakeBody:this.snake.getSnakeBody()});
+        this.apple = this.foodFactory.createFood("apple", {
+            score: config.appleScore,
+            snakeBody: this.snake.getSnakeBody()
+        });
         while (!this.gameOver) {
-            if(this.pauseGame){
+            if (this.pauseGame) {
                 await timeout(config.gameSpeed);
                 // this.draw();
-            }else{
+            } else {
                 await timeout(config.gameSpeed);
                 this.draw();
             }
@@ -105,14 +111,23 @@ class Game {
     _collision(newHead) {
         return this.snake.include(newHead);
     }
+
+    _GetRelativeRateResults(score) {
+        for (var i = 0; i < scores.length; i++) {
+            if(score > scores[i].score){
+                return scores[i].id;
+            }
+        }
+        return scores.length;
+    }
 }
 
-Game.pause = function(backgroundListener){
+Game.pause = function (backgroundListener) {
     game.pauseGame = true;
     backgroundListener.listen = false;
 };
 
-Game.resume = function(backgroundListener){
+Game.resume = function (backgroundListener) {
     game.pauseGame = false;
     backgroundListener.listen = true;
 };
@@ -138,7 +153,10 @@ Game.ManageFood = class {
             }
 
             if (bonus && this.counter > (config.startGetBonusRandomAfterEatNumOfFood || 1)) {
-                this._foods.push(this.foodFactory.createFood(config.bonus.name, {score: config.bonus.score, snakeBody:this.snake.getSnakeBody()}));
+                this._foods.push(this.foodFactory.createFood(config.bonus.name, {
+                    score: config.bonus.score,
+                    snakeBody: this.snake.getSnakeBody()
+                }));
                 sound.play("bonus");
             }
         }, timeout));
@@ -151,12 +169,15 @@ Game.ManageFood = class {
         } else {
             newFood = config.foods[Math.floor(Math.random() * Math.floor(config.foods.length))];
         }
-        this._foods.push(this.foodFactory.createFood(newFood.name, {score: newFood.score, snakeBody:this.snake.getSnakeBody()}));
+        this._foods.push(this.foodFactory.createFood(newFood.name, {
+            score: newFood.score,
+            snakeBody: this.snake.getSnakeBody()
+        }));
         this.counter++;
 
         var rand = (Math.floor(Math.random() * Math.floor(config.maxIntervalGetBonus || 10)) + 1) * 1000;
 
-        if(this.counter % (config.getBonusAfterEveryNumOfFood | 3) == 0) this.addBonus(rand, sound)
+        if (this.counter % (config.getBonusAfterEveryNumOfFood | 3) == 0) this.addBonus(rand, sound)
     }
 
     printFoods() {
@@ -205,8 +226,8 @@ Game.ManageFood = class {
         return {status: false};
     }
 
-    onGameOver(){
-        for(var i=0; i<this.bonusTimeOut.length; i++){
+    onGameOver() {
+        for (var i = 0; i < this.bonusTimeOut.length; i++) {
             clearTimeout(this.bonusTimeOut[i]);
         }
     }

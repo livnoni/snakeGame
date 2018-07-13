@@ -21,3 +21,4 @@ const config = {
 
 //GLOBAL VARIABLES:
 var snakeDirection;
+var scores;
