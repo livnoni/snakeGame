@@ -28,7 +28,10 @@
     <button id="pauseBtn" style="height: 50px">pause</button>
     <button id="viewScores" style="height: 50px">view scores</button>
     <button disabled id="downloadScores" style="height: 50px">Download all scores</button>
-    <a href="snakeUmlDiagram.html" target="_blank">View Snake UML Diagram</a>
+    <button type="button" onClick="window.location.reload()" style="height: 50px">Start new game</button>
+    <button style="height: 50px" onclick="window.open('snakeUmlDiagram.html');" target="_blank">
+        <a href="snakeUmlDiagram.html" target="_blank" >View Snake UML Diagram</a>
+    </button>
 </div>
 <div id="gameDiv">
     <canvas id="snake" width="608" height="608" ></canvas>
