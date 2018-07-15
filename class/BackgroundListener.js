@@ -136,6 +136,7 @@ class BackgroundListener {
             //load sample data into the table
             $("#score-table").tabulator("setData", data);
             scores = data;
+            document.getElementById("totalGames").innerText = `${scores.length} Total games so far !`
         })
     }
 
