@@ -10,6 +10,10 @@ The game use the famous Designs pattern (Factory, Singleton, Config, Rest API, S
 
 #### Here you can view the UML Diagram of the game:   [UML Diagram](https://htmlpreview.github.io/?https://raw.githubusercontent.com/livnoni/snakeGame/master/snakeUmlDiagram.html)
 
+
+
 ##### For hosting the node server i am use heroku
 ##### For hosting hte mongo DB i use mlab
 ##### For parse Json to table i use tabulator
+
+![alt text](https://github.com/livnoni/snakeGame/blob/master/snakeScreenShot.PNG)
