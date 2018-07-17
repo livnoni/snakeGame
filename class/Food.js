@@ -61,7 +61,6 @@ class HasTimeOut extends Strategy{
     hasTimeOut(){
         return true;
     }
-    //todo: to add more logic for that case...
     decreaseScore(){
         setInterval(()=>{
             if (this.bonus.score >= 0) this.bonus.score = this.bonus.score - 1;
@@ -116,7 +115,6 @@ class Watermelon extends Food {
 class Bonus extends Food {
     constructor(param) {
         super(param);
-        // console.log("bonus,this.score=",this.score)
         this.strategy = new HasTimeOut(this);
     }
 
