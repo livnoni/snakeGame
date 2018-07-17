@@ -11,6 +11,7 @@ class BackgroundListener {
         this._downloadScoresAndShow();
         this.disableArrowKeys();
 
+        this.lastEventTime = new Date();
     }
 
     keyboardListener() {
@@ -86,10 +87,24 @@ class BackgroundListener {
     }
 
     move(direction) {
-        if (this.listen) {
+        var self = this;
+        if (self.listen) {
+            var currentEventTime = new Date();
+            var timediff = currentEventTime - this.lastEventTime;
+            if(timediff < config.gameSpeed){
+                setTimeout(()=>{
+                    _move();
+                }, config.gameSpeed - timediff)
+            }else{
+                _move();
+            }
+        }
+
+        function _move(){
             snakeDirection = direction.toUpperCase();
-            this.toString();
-            this.sound.play(direction.toLowerCase());
+            self.toString();
+            self.sound.play(direction.toLowerCase());
+            self.lastEventTime = currentEventTime;
         }
     }
 
