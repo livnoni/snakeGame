@@ -42,7 +42,7 @@ function onGameOver(data) {
 
 
     if (confirm("Do you want to play again ?")) {
-        var game = new Game(config.soundPath, new Snake());
+        var game = new Game();
         console.log("game=\n"+JSON.stringify(game));
         game.startGame();
 
@@ -55,6 +55,6 @@ function onGameOver(data) {
 ///////////////////////RUN-GAME/////////////////////////////
 ////////////////////////////////////////////////////////////
 
-var game = new Game(config.soundPath, new Snake());
+var game = new Game();
 console.log("game=\n"+JSON.stringify(game));
 game.startGame();
