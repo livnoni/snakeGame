@@ -2,11 +2,11 @@
  * Single-tone Class
  */
 class Game {
-    constructor(soundPath, snake) {
+    constructor() {
         if (!Game._singleton) {
             console.log(`create new Game`);
-            this.sound = new Sound(soundPath);
-            this.snake = snake;
+            this.sound = new Sound(config.soundPath);
+            this.snake = new Snake();
             this.background = new Background(config.groundPath);
             this.backgroundListener = new BackgroundListener(this.sound);
             this.foodFactory = new FoodFactory();
@@ -15,20 +15,17 @@ class Game {
             this.gameOver = false;
             this.pauseGame = false;
             this.relativeScore = null;
-            // this.pauseGameListener();
             Game._singleton = this;
-
         } else {
             console.log(`already exist Game!`);
-            Game._singleton.snake = snake;
+            Game._singleton.snake = new Snake();
             Game._singleton.score = 0;
             Game._singleton.manageFood = new Game.ManageFood(Game._singleton.snake);
             Game._singleton.relativeScore = null;
+            Game._singleton.gameOver = false;
             return Game._singleton;
         }
-
     }
-
 
     draw() {
         const cvs = document.getElementById("snake");
@@ -72,7 +69,6 @@ class Game {
     }
 
     async startGame() {
-        this.gameOver = false;
         this.apple = this.foodFactory.createFood("apple", {
             score: config.appleScore,
             snakeBody: this.snake.getSnakeBody()
@@ -80,12 +76,10 @@ class Game {
         while (!this.gameOver) {
             if (this.pauseGame) {
                 await timeout(config.gameSpeed);
-                // this.draw();
             } else {
                 await timeout(config.gameSpeed);
                 this.draw();
             }
-
         }
 
         function timeout(ms) {
@@ -201,7 +195,6 @@ Game.ManageFood = class {
     }
 
     eat(snake, sound, score) {
-        // console.log("gotScore=",score);
         for (var i = 0; i < this._foods.length; i++) {
             if (this._foods[i].score <= 0) {
                 this._foods.splice(i, 1);
