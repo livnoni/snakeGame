@@ -62,7 +62,7 @@ class Snake {
     include(point) {
         //i = 1 because the new head (_body[0] always equal to newHead...)
         //i = 2 because when click fast on to arrows it may be equal...
-        for (var i = 2; i < this._body.length; i++) {
+        for (var i = 1; i < this._body.length; i++) {
             if (this._body[i].equal(point)) {
                 return true;
             }
