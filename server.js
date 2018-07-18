@@ -54,11 +54,14 @@ app.post('/sendScore', function (req, res) {
         if(score == eventsScore){
             writeToDB({name, score}, "scores");
             //send to DB:
+            console.log("successfully got score=" + score + " to " + name);
             res.send("successfully got score=" + score + " to " + name);
         }else{
+            console.log("Data not valid.");
             res.send("Data not valid.");
         }
     }catch (err){
+        console.log("Error accord");
         res.send("Error accord");
     }
 
