@@ -1,6 +1,7 @@
 class BackgroundListener {
-    constructor(sound) {
+    constructor(sound, observer) {
         this.sound = sound;
+        this.observer = observer;
         this.listen = true;
 
         this.keyboardListener();
@@ -102,6 +103,7 @@ class BackgroundListener {
 
         function _move(){
             snakeDirection = direction.toUpperCase();
+            self.observer.notify(new Event(`direction -> ${snakeDirection}`,0));
             self.toString();
             self.sound.play(direction.toLowerCase());
             self.lastEventTime = currentEventTime;
@@ -125,9 +127,11 @@ class BackgroundListener {
         var status = document.getElementById("pauseBtn").innerHTML;
         if (status == "pause") {
             Game.pause(self);
+            this.observer.notify(new Event(`pause button -> pause`,0));
             document.getElementById("pauseBtn").innerHTML = "continue";
         } else {
             Game.resume(self);
+            this.observer.notify(new Event(`pause button -> continue`,0));
             document.getElementById("pauseBtn").innerHTML = "pause";
         }
     }
@@ -135,6 +139,7 @@ class BackgroundListener {
     viewScoresListener() {
         var self = this;
         document.getElementById("viewScores").addEventListener("click", function () {
+            self.observer.notify(new Event(`viewScores`,0));
             self._downloadScoresAndShow();
         });
     }
