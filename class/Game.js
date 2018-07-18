@@ -7,11 +7,12 @@ class Game {
             console.log(`create new Game`);
             this.sound = new Sound(config.soundPath);
             this.snake = new Snake();
+            this.observer = new Observer();
             this.background = new Background(config.groundPath);
-            this.backgroundListener = new BackgroundListener(this.sound);
+            this.backgroundListener = new BackgroundListener(this.sound, this.observer);
             this.foodFactory = new FoodFactory();
             this.score = 0;
-            this.manageFood = new Game.ManageFood(this.snake);
+            this.manageFood = new Game.ManageFood(this.snake, this.observer);
             this.gameOver = false;
             this.pauseGame = false;
             this.relativeScore = null;
@@ -20,7 +21,7 @@ class Game {
             console.log(`already exist Game!`);
             Game._singleton.snake = new Snake();
             Game._singleton.score = 0;
-            Game._singleton.manageFood = new Game.ManageFood(Game._singleton.snake);
+            Game._singleton.manageFood = new Game.ManageFood(Game._singleton.snake, Game._singleton.observer);
             Game._singleton.relativeScore = null;
             Game._singleton.gameOver = false;
             return Game._singleton;
@@ -96,8 +97,10 @@ class Game {
             this.gameOver = true;
             this.manageFood.onGameOver();
             this.sound.play("dead");
+            this.observer.notify(new Event("game over", 0));
+            // console.log("this.observer.events=",this.observer.events);
             setTimeout(() => {
-                onGameOver({score: this.score});
+                onGameOver({score: this.score, events: this.observer.encode()});
             }, 100)
         }
     }
@@ -128,8 +131,9 @@ Game.resume = function (backgroundListener) {
 
 Game._singleton = null;
 Game.ManageFood = class {
-    constructor(snake) {
+    constructor(snake, observer) {
         this.snake = snake;
+        this.observer = observer;
         this._foods = [];
         this.foodFactory = new FoodFactory();
         this.counter = 0;
@@ -195,6 +199,7 @@ Game.ManageFood = class {
     }
 
     eat(snake, sound, score) {
+        //remove foods that their score is less then zero
         for (var i = 0; i < this._foods.length; i++) {
             if (this._foods[i].score <= 0) {
                 this._foods.splice(i, 1);
@@ -209,9 +214,11 @@ Game.ManageFood = class {
                 var tempfood = this._foods[i];
                 this._foods.splice(i, 1);
                 if (tempfood instanceof Bonus) {
+                    this.observer.notify(new Event("bonus",tempfood.getScore()));
                     return {status: true, score: score + tempfood.getScore()};
                 } else {
                     this.addFood(sound);
+                    this.observer.notify(new Event("food",tempfood.getScore()));
                     return {status: true, score: score + tempfood.getScore()};
                 }
             }
