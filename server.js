@@ -3,6 +3,8 @@ var express = require('express');
 var cors = require('cors');
 var bodyParser = require("body-parser");
 var app = express();
+var atob = require('atob');
+
 
 app.use(cors());
 app.use(bodyParser.json()); // support json encoded bodies
@@ -66,7 +68,7 @@ app.post('/sendScore', function (req, res) {
             res.send("Data not valid.");
         }
     }catch (err){
-        console.log("Error accord");
+        console.log("Error accord:"+err);
         res.send("Error accord");
     }
 
