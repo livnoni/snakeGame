@@ -30,7 +30,7 @@ app.get('/scores', async function (req, res) {
         dbo.collection(config.collection).find({}).toArray(function (err, result) {
             if (err) throw err;
             result.sort(function(a,b){return b.score - a.score});
-            console.log(result);
+            // console.log(result);
             db.close();
             res.end(JSON.stringify(result));
         });
