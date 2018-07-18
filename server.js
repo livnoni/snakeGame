@@ -44,8 +44,13 @@ app.post('/sendScore', function (req, res) {
     var score = req.body.score;
     var events = req.body.events;
 
+    console.log("req.body.events=",req.body.events);
+
     try{
         events = JSON.parse(atob(events));
+
+        console.log("events=\n"+JSON.stringify(events));
+
 
         var eventsScore = 0;
         for(var i=0; i<events.length; i++){
