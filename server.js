@@ -42,10 +42,28 @@ app.post('/sendScore', function (req, res) {
 
     var name = req.body.name;
     var score = req.body.score;
+    var events = req.body.events;
 
-    writeToDB({name, score}, "scores");
-    //send to DB:
-    res.send("succsefully got score=" + score + " to " + name);
+    try{
+        events = JSON.parse(atob(events));
+
+        var eventsScore = 0;
+        for(var i=0; i<events.length; i++){
+            eventsScore = eventsScore + events[i].score;
+        }
+        if(score == eventsScore){
+            writeToDB({name, score}, "scores");
+            //send to DB:
+            res.send("successfully got score=" + score + " to " + name);
+        }else{
+            res.send("Data not valid.");
+        }
+    }catch (err){
+        res.send("Error accord");
+    }
+
+
+
 });
 
 app.post('/deleteScore', function (req, res) {
