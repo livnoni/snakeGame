@@ -11,6 +11,7 @@ class BackgroundListener {
         this.downloadScoresAsCSV();
         this._downloadScoresAndShow();
         this.disableArrowKeys();
+        this.showScoresListener();
 
         this.lastEventTime = new Date();
     }
@@ -147,17 +148,39 @@ class BackgroundListener {
     _downloadScoresAndShow(){
         this._httpGetAsync(`${config.nodeServerAddress}/scores`, (data)=>{
             console.log("got:",data);
-            data = JSON.parse(data)
+            data = JSON.parse(data);
             for(var i=0; i<data.length; i++){
                 data[i].mark = data[i].score/100;
                 data[i].id = i+1;
             }
             document.getElementById("downloadScores").disabled = false;
             //load sample data into the table
-            $("#score-table").tabulator("setData", data);
+            $("#score-table").tabulator("setData", data.slice(0,config.numOfFirstTopScores));
             scores = data;
-            document.getElementById("totalGames").innerText = `${scores.length} Total games so far !`
+            document.getElementById("totalGames").innerText = `${scores.length} Total games so far !`;
+            document.getElementById("showAllScores").style.display = "block";
         })
+    }
+
+    showScoresListener(){
+        var self = this;
+        document.getElementById("showAllScores").addEventListener("click", function () {
+            var showAllScoresButton = document.getElementById("showAllScores");
+            if(showAllScoresButton.innerHTML == "Show all Scores"){
+                self._showAllScores();
+                showAllScoresButton.innerHTML = "Minimize Score"
+            }else{
+                self._minimizeScores();
+                showAllScoresButton.innerHTML = "Show all Scores"
+            }
+        });
+    }
+
+    _showAllScores(){
+        $("#score-table").tabulator("setData", scores);
+    }
+    _minimizeScores(){
+        $("#score-table").tabulator("setData", scores.slice(0,config.numOfFirstTopScores));
     }
 
     _httpGetAsync(theUrl, callback) {

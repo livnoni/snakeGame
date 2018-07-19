@@ -16,6 +16,7 @@ const config = {
     startGetBonusRandomAfterEatNumOfFood : 3,
     getBonusAfterEveryNumOfFood: 3,
     maxIntervalGetBonus: 10,
+    numOfFirstTopScores: 30,
     nodeServerAddress: "https://livnonisnake.herokuapp.com"
 };
 
