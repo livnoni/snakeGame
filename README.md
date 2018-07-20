@@ -32,7 +32,7 @@ Snake game uses a number of open source projects to work properly:
 
 
 
-![alt text](https://github.com/livnoni/snakeGame/blob/master/snakeScreenShot.PNG)
+![alt text](https://github.com/livnoni/snakeGame/blob/master/snakeScreenShot_game.PNG)
 
 
 License
