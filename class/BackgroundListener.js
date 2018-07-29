@@ -141,6 +141,7 @@ class BackgroundListener {
         var self = this;
         document.getElementById("viewScores").addEventListener("click", function () {
             self.observer.notify(new Event(`viewScores`,0));
+            document.getElementById("loader").style.display = "block";
             self._downloadScoresAndShow();
         });
     }
@@ -159,6 +160,7 @@ class BackgroundListener {
             scores = data;
             document.getElementById("totalGames").innerText = `${scores.length} Total games so far !`;
             document.getElementById("showAllScores").style.display = "block";
+            document.getElementById("loader").style.display = "none";
         })
     }
 
