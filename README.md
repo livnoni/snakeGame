@@ -1,7 +1,7 @@
 # JS Snake game
 ## Design Pasterns - Final Project
 
-##### You can play the game  [Here](http://htmlpreview.github.io/?https://github.com/livnoni/snakeGame/blob/master/index.html)
+##### You can play the game  [Here](https://livnoni.github.io/snakeGame/index.html)
 
 
 This game written using ec6, fully object oriented.
